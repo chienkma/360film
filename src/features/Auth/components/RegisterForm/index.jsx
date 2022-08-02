@@ -1,6 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
+
+import { FacebookAuthProvider, signInWithPopup } from "firebase/auth";
+
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {
@@ -11,8 +14,9 @@ import {
   Typography,
 } from "@material-ui/core";
 import { LockOutlined } from "@material-ui/icons";
-import InputField from "../../../components/form-control/InputField";
-import PasswordField from "../../../components/form-control/PasswordField";
+import InputField from "../../../../components/form-control/InputField";
+import PasswordField from "../../../../components/form-control/PasswordField";
+import { auth } from "../../../../firebase/config";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,6 +46,21 @@ RegisterForm.propTypes = {
 };
 
 function RegisterForm(props) {
+  const handleFb = () => {
+    const provider = new FacebookAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        const credential = FacebookAuthProvider.credentialFromResult(result);
+        const accessToken = credential.accessToken;
+        const details = getAdditionalUserInfo(result);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const credential = FacebookAuthProvider.credentialFromError(error);
+      });
+  };
   const classes = useStyles();
 
   const schema = yup.object().shape({
@@ -122,6 +141,7 @@ function RegisterForm(props) {
           Create an account
         </Button>
       </form>
+      <button onClick={handleFb}>FB</button>
     </div>
   );
 }

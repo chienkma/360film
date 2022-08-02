@@ -14,8 +14,6 @@ InputField.propTypes = {
 function InputField(props) {
   const { form, name, label } = props;
   const { control } = form;
-  console.log(control);
-
   return (
     <Controller
       name={name}
