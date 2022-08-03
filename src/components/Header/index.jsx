@@ -1,10 +1,10 @@
 import { IconButton } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import { Close, FavoriteOutlined, Search } from "@material-ui/icons";
 import { useState } from "react";
+import Login from "../../features/Auth/components/Login";
 import Register from "../../features/Auth/components/Register";
 function Header() {
   const [open, setOpen] = useState(false);
@@ -51,7 +51,7 @@ function Header() {
           <Close onClick={handleClose} />
         </IconButton>
         <DialogContent>
-          <Register />
+          <Login />
         </DialogContent>
         <DialogActions></DialogActions>
       </Dialog>

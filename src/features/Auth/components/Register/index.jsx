@@ -1,19 +1,30 @@
 import React from "react";
-import PropTypes from "prop-types";
 import RegisterForm from "../RegisterForm";
-import { useDispatch } from "react-redux";
-import { register } from "../../userSlice";
-import { unwrapResult } from "@reduxjs/toolkit";
-
-Register.propTypes = {};
-
+import { useSnackbar } from "notistack";
+import PropTypes from "prop-types";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../../../firebase/config";
+Register.prototype = {
+  closeDialog: PropTypes.func,
+};
 function Register(props) {
-  const dispatch = useDispatch();
-  const handleSubmit = async (values) => {
-    const action = register(values);
-    console.log(action);
-    const resultAction = await dispatch(action);
-    console.log(resultAction);
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleSubmit = (values) => {
+    try {
+      const email = values.email;
+      const password = values.password;
+      signInWithEmailAndPassword(auth, email, password).then(
+        (userCredential) => {
+          const user = userCredential.user;
+        }
+      );
+      enqueueSnackbar("Register secessfully", { variant: "success" });
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      enqueueSnackbar("Register Fail", { variant: "error" });
+    }
   };
   return (
     <div>

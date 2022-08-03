@@ -31,4 +31,4 @@ axiosClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-export default axi;
+export default axios;
