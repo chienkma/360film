@@ -1,4 +1,4 @@
-import { IconButton } from "@material-ui/core";
+import { IconButton, Box, Button } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -7,7 +7,12 @@ import { useState } from "react";
 import Login from "../../features/Auth/components/Login";
 import Register from "../../features/Auth/components/Register";
 function Header() {
+  const MODE = {
+    REGISTER: "register",
+    LOGIN: "login",
+  };
   const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState(MODE.LOGIN);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -16,6 +21,7 @@ function Header() {
   const handleClose = () => {
     setOpen(false);
   };
+
   return (
     <div className=' flex justify-around items-center bg-[#000] h-[64px] text-white'>
       <div className='bg-black'>
@@ -51,9 +57,27 @@ function Header() {
           <Close onClick={handleClose} />
         </IconButton>
         <DialogContent>
-          <Login />
+          {mode === MODE.REGISTER && (
+            <>
+              <Register closeDialog={handleClose}></Register>
+              <Box textAlign='center'>
+                <Button color='primary' onClick={() => setMode(MODE.LOGIN)}>
+                  Already an account. Login here
+                </Button>
+              </Box>
+            </>
+          )}
+          {mode === MODE.LOGIN && (
+            <>
+              <Login closeDialog={handleClose}></Login>
+              <Box textAlign='center'>
+                <Button color='primary' onClick={() => setMode(MODE.REGISTER)}>
+                  Don't have an account. Register here
+                </Button>
+              </Box>
+            </>
+          )}
         </DialogContent>
-        <DialogActions></DialogActions>
       </Dialog>
     </div>
   );
